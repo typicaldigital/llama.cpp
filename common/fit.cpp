@@ -872,6 +872,68 @@ static void common_params_fit_impl(
             __func__, dev_names[id].c_str(), ngl_per_device[id].n_layer, ngl_per_device[id].n_part, mem[id]/MiB, projected_margin/MiB);
     }
 
+    // typdigital: rebalance partial layers toward the first (fastest) device.
+    // After the dense-to-full conversion, later devices often hold many
+    // dense-only (partial) layers while earlier devices still have spare
+    // target memory. Moving a partial layer to an earlier device shifts that
+    // layer's attention and dense compute to the faster GPU; its MoE experts
+    // stay on the overflow buffer (CPU) either way, so only the cheap dense
+    // weights move between devices. Repeat until no donor has movable
+    // partial layers or every earlier device is at its memory target.
+    // Only partial layers move, so every device keeps at least
+    // (n_layer - n_part) full layers and the output layer stays put.
+    for (size_t id = 0; id + 1 < nd; id++) {
+        bool moved_any = false;
+        do {
+            moved_any = false;
+            for (size_t jd = id + 1; jd < nd; jd++) {
+                if (ngl_per_device[jd].n_part == 0) {
+                    continue; // donor has no partial layers to give
+                }
+                std::vector<ngl_t> ngl_test = ngl_per_device;
+                ngl_test[id].n_layer++;
+                ngl_test[id].n_part++;
+                ngl_test[jd].n_layer--;
+                ngl_test[jd].n_part--;
+                const std::vector<int64_t> mem_test = get_memory_for_layers(__func__, ngl_test, overflow_bufts);
+                // typdigital: rebalance must respect the FULL safety margin.
+                // A margin dip (targets[id] + margins[id]/2) packed CUDA0
+                // beyond what compute buffers + KV actually left free; the
+                // per-decode compute allocation then failed and fell back to
+                // CPU, collapsing throughput ~40x (0.078 tok/s observed).
+                // The margin (default 1 GiB) is sized for the compute buffer
+                // (~718 MiB at ubatch 1024) plus slack - it is not spare
+                // layer capacity. Note the fast GPU idling while a slow GPU
+                // saturates is expected for CPU-expert-bound MoE: the fast
+                // GPU finishes its layers and waits on the shared CPU path.
+                // Verify every device stays within target: the receiver gains
+                // dense weights, and if its overflow buffer is another GPU,
+                // that device gains the moved layer's expert tensors.
+                bool all_fit = true;
+                for (size_t d = 0; d < nd && all_fit; d++) {
+                    if (mem_test[d] > targets[d]) {
+                        all_fit = false;
+                    }
+                }
+                if (all_fit) {
+                    ngl_per_device = ngl_test;
+                    mem            = mem_test;
+                    moved_any      = true;
+                    LOG_TRC("%s: rebalance: moved 1 partial layer from %s to %s\n",
+                        __func__, dev_names[jd].c_str(), dev_names[id].c_str());
+                }
+            }
+        } while (moved_any);
+    }
+
+    LOG_TRC("%s: final layer distribution after fast-device rebalance:\n", __func__);
+    for (size_t id = 0; id < nd; id++) {
+        const int64_t projected_margin = dmds_full[id].free - mem[id];
+        LOG_TRC(
+            "%s:   - %s: %2" PRIu32 " layers (%2" PRIu32 " overflowing), %6" PRId64 " MiB used, %6" PRId64 " MiB free\n",
+            __func__, dev_names[id].c_str(), ngl_per_device[id].n_layer, ngl_per_device[id].n_part, mem[id]/MiB, projected_margin/MiB);
+    }
+
     set_ngl_tensor_split_tbo(ngl_per_device, overflow_bufts, *mparams);
 }
 
