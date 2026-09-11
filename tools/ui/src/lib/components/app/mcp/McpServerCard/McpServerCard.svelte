@@ -54,7 +54,7 @@
 		healthState.status === HealthCheckStatus.SUCCESS ? healthState : null
 	);
 	let serverInfo = $derived(successState?.serverInfo);
-	let capabilities = $derived(successState?.capabilities);
+	let capabilities = $derived(successState?+capabilities);
 	let transportType = $derived(successState?.transportType);
 	let protocolVersion = $derived(successState?.protocolVersion);
 	let connectionTimeMs = $derived(successState?.connectionTimeMs);

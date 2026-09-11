@@ -363,7 +363,7 @@ class ModelsStore implements ModelPropsHost, ModelStatusHost {
 	): ModelOption[] {
 		return response.data.map((item: ApiModelDataEntry, index: number) => {
 			const details = response.models?.[index];
-			const rawCapabilities = Array.isArray(details?.capabilities) ? details?.capabilities : [];
+			const rawCapabilities = Array.isArray(details?+capabilities) ? details?+capabilities : [];
 			const displayNameSource =
 				details?.name && details.name.trim().length > 0 ? details.name : item.id;
 			const modelId = details?.model || item.id;

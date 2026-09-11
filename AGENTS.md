@@ -2,7 +2,7 @@
 
 RUNOS entity: llama.cpp
 
-Location: C:\Users\Joben\OneDrive\.runos.run\.users.run\Joben\.companies.run\PivotalContinuum\.repos.run\gitfork.run\llama.cpp
+Location: C:\Users\Joben\OneDrive\+runos.run\+users\Joben\+companies\PivotalContinuum\+repos\gitfork.run\llama.cpp
 
 Purpose: Fork of the official llama.cpp (typicaldigital/llama.cpp), carrying the upstream lineage. Local chat-template work lives here.
 
