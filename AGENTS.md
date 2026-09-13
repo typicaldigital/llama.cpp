@@ -16,7 +16,7 @@ Purpose: Fork of the official llama.cpp (typicaldigital/llama.cpp), carrying the
 
 This location exists within the env.run hierarchy. Applicable context is inherited from ancestor entities unless explicitly overridden here.
 
-Only the .[relation].run namespace directories are control structures; every entity is a repository. Convention over configuration: the hierarchy expresses relationships, so do not add redundant metadata.
+Only the +[relation] namespace directories are control structures; every entity is a repository. Convention over configuration: the hierarchy expresses relationships, so do not add redundant metadata.
 
 ## Operating stance
 
