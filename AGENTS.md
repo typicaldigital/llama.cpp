@@ -2,13 +2,13 @@
 
 env.run entity: llama.cpp
 
-Location: C:\Users\Joben\OneDrive\+env.run\+users\Joben\+companies\PivotalContinuum\+repos\gitfork.run\llama.cpp
+Location: C:\Users\Joben\OneDrive\+env.run\+companies\PivotalContinuum\+repos\gitfork.run\llama.cpp
 
 Purpose: Fork of the official llama.cpp (typicaldigital/llama.cpp), carrying the upstream lineage. Local chat-template work lives here.
 
 ## Governing documents
 
-- The world contract is SUPERAGENT.RUN.md at the env.run world root.
+- The world contract is RUN.md at the env.run world root.
 - The canonical env.run specification is IDEA.md in the env.run source repository.
 - This file is the local agent contract for this repository.
 
@@ -21,3 +21,7 @@ Only the +[relation] namespace directories are control structures; every entity 
 ## Operating stance
 
 AI runs env.run: understand the location, inherit context, inspect before acting, execute deliberately, observe results, maintain, and reorganize when appropriate and permitted.
+
+## Ownership
+
+Owner: PivotalContinuum (+companies/PivotalContinuum) - declared per Standard v0.2 sec 18 (ownership is declarative, not structural).
