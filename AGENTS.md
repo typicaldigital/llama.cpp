@@ -2,7 +2,7 @@
 
 env.run entity: llama.cpp
 
-Location: C:\Users\Joben\OneDrive\+env.run\+companies\PivotalContinuum\+repos\gitfork.run\llama.cpp
+Location: C:\Users\Joben\OneDrive\+env.run\+repos\gitfork\llama.cpp
 
 Purpose: Fork of the official llama.cpp (typicaldigital/llama.cpp), carrying the upstream lineage. Local chat-template work lives here.
 
