@@ -2,7 +2,7 @@
 
 env.run entity: llama.cpp
 
-Location: C:\Users\Joben\OneDrive\+env.run\+repos\gitfork\llama.cpp
+Location: C:\Users\Joben\OneDrive\+env.run\+repos\gitfork\#llama.cpp
 
 Purpose: Fork of the official llama.cpp (typicaldigital/llama.cpp), carrying the upstream lineage. Local chat-template work lives here.
 
@@ -24,4 +24,4 @@ AI runs env.run: understand the location, inherit context, inspect before acting
 
 ## Ownership
 
-Owner: PivotalContinuum (+companies/PivotalContinuum) - declared per Standard v0.2 sec 18 (ownership is declarative, not structural).
+Owner: PivotalContinuum (+companies/#PivotalContinuum) - declared per Standard v0.2 sec 18 (ownership is declarative, not structural).

@@ -21,7 +21,7 @@
 - Ownership: PivotalContinuum (declared per Standard v0.2 §18).
 - **World-convention note (2026-09-24):** the upstream `CLAUDE.md` was removed in
   this fork — the world convention is AGENTS.md-only (Claude reads AGENTS.md
-  natively). The pristine `+repos/gitrepo/llama.cpp` clone keeps its upstream
+  natively). The pristine `+repos/gitrepo/#llama.cpp` clone keeps its upstream
   CLAUDE.md untouched (Standard §9). Expect a trivial upstream merge for that
   file on the next upstream sync.
 
